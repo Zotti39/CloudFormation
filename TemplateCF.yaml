@@ -433,10 +433,6 @@ Resources:
       VpcId: !Ref MinhaVPC
       SecurityGroupIngress:  ### Inbound rules
         - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
           CidrIp: 0.0.0.0/0
@@ -453,20 +449,16 @@ Resources:
       VpcId: !Ref MinhaVPC
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          SourceSecurityGroupId: !Ref SGLB
-        - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
           SourceSecurityGroupId: !Ref SGLB
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
-          CidrIp: 10.0.0.0/16
-      SecurityGroupEgress:     # No template sem SecurityGroupEgress ele mantem o default, que é all trafic liberado para 0.0.0.0/16
-        - IpProtocol: '-1'     # Protocolo '-1' representa todos os protocolos (all traffic)
-          CidrIp: 0.0.0.0/0    # Permitindo acesso de qualquer lugar (0.0.0.0/16)
+          CidrIp: 172.31.0.0/16     # Cidr Block da VPC
+      SecurityGroupEgress:          # No template sem SecurityGroupEgress ele mantem o default, que é all trafic liberado para 0.0.0.0/16
+        - IpProtocol: '-1'          # Protocolo '-1' representa todos os protocolos (all traffic)
+          CidrIp: 0.0.0.0/0         # Permitindo acesso de qualquer lugar (0.0.0.0/16)
   SGRDS:
     Type: AWS::EC2::SecurityGroup
     DependsOn:
